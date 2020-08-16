@@ -8,10 +8,12 @@ import './App.css';
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
 import CheckoutPage from './pages/checkout/checkout.component';
+import WithSpinner from './components/with-spinner/with-spinner.component';
 
 import SignInSignOut from './pages/sign-in-and-sign-out-page/sign-in-and-sign-out.component';
 import Header from './components/header/header.component.jsx';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+
 import { setCurrentUser } from './redux/user/user.action'; 
 import {selectCurrentUser} from './redux/user/user.selector';
 
@@ -26,7 +28,6 @@ class App extends React.Component {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-
         userRef.onSnapshot(snapShot => {
           setCurrentUser ({
               id: snapShot.id,
@@ -54,6 +55,7 @@ render() {
         <Route path='/shop' component={ShopPage} />
         <Route path='/sign-in' component={SignInSignOut} />
         <Route exact path='/checkout' component={CheckoutPage} />
+        <Route exact path='/spinner' component={WithSpinner} />
       </Switch>
     </div >
   )
@@ -61,7 +63,7 @@ render() {
 }
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 
 const mapDispatchToProp = dispatch => ({
